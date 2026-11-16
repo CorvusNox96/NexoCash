@@ -1,0 +1,35 @@
+<Window x:Class="NexoCash.Desktop.Features.Services.ServiceBanknotesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Revisar consolidación de servicios" Width="670" Height="610" MinWidth="560" MinHeight="500"
+        WindowStartupLocation="CenterOwner" Background="#E1E8F0">
+    <Grid Margin="28">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="2. Revisar y contar efectivo" FontSize="25" FontWeight="SemiBold" Foreground="#183345"/>
+            <TextBlock Text="Comprueba los montos finales. El conteo de billetes es opcional." Foreground="#607987" TextWrapping="Wrap" Margin="0,6,0,18"/>
+        </StackPanel>
+        <Border Grid.Row="1" Background="#F8FAFD" BorderBrush="#9BB2CD" BorderThickness="1" CornerRadius="10" Padding="16">
+            <StackPanel>
+                <TextBlock Text="Efectivo que entra en caja" Foreground="#607987"/>
+                <TextBlock x:Name="ExpectedText" FontSize="20" FontWeight="SemiBold" Foreground="#183345" Margin="0,5,0,0"/>
+                <TextBlock x:Name="CashBreakdownText" Foreground="#607987" TextWrapping="Wrap" Margin="0,6,0,0"/>
+            </StackPanel>
+        </Border>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,18,0,0">
+            <StackPanel>
+                <TextBlock Text="Montos finales" FontSize="16" FontWeight="SemiBold" Foreground="#183345"/>
+                <TextBlock x:Name="ReportText" Foreground="#456371" TextWrapping="Wrap" Margin="0,8,0,15"/>
+                <Button x:Name="CountButton" Content="Contar billetes..." HorizontalAlignment="Left" Padding="15,9" Click="Count_Click"/>
+                <TextBlock x:Name="CountSummaryText" Text="No se han contado billetes." Foreground="#456371" TextWrapping="Wrap" Margin="0,13,0,0"/>
+                <TextBlock x:Name="ErrorText" Foreground="#B44040" TextWrapping="Wrap" Margin="0,13,0,0"/>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Content="Volver" Padding="15,9" Margin="0,0,9,0" Click="Back_Click"/>
+            <Button x:Name="SkipButton" Content="Omitir conteo y finalizar" Padding="15,9" Margin="0,0,9,0" Click="Skip_Click"/>
+            <Button x:Name="FinishButton" Content="Finalizar consolidación" Background="#2868C7" Foreground="White" BorderThickness="0" Padding="16,9" Click="Finish_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

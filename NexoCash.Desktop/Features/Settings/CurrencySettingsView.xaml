@@ -1,0 +1,198 @@
+<UserControl x:Class="NexoCash.Desktop.Features.Settings.CurrencySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:settings="clr-namespace:NexoCash.Desktop.Features.Settings" Background="Transparent">
+    <UserControl.Resources>
+        <Style x:Key="RowStyle" TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="Background" Value="White"/><Setter Property="Foreground" Value="#183345"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Style.Triggers><Trigger Property="IsSelected" Value="True"><Setter Property="Background" Value="#DEEAFC"/><Setter Property="Foreground" Value="#183345"/></Trigger></Style.Triggers>
+        </Style>
+        <Style x:Key="CellStyle" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+            <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="#183345"/>
+            <Setter Property="BorderThickness" Value="0"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers><DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True"><Setter Property="Background" Value="#DEEAFC"/><Setter Property="Foreground" Value="#183345"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="TextStyle" TargetType="TextBlock" BasedOn="{StaticResource TableText}"/>
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="#42628D"/>
+            <Setter Property="Background" Value="#DCE9F7"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabSurface" Background="{TemplateBinding Background}"
+                                BorderBrush="#91ADD0" BorderThickness="1" CornerRadius="9"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabSurface" Property="Background" Value="#DCE9FB"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabSurface" Property="Background" Value="#2868C7"/>
+                                <Setter TargetName="TabSurface" Property="BorderBrush" Value="#2868C7"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid Background="Transparent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TabPanel Grid.Row="0" IsItemsHost="True" Background="Transparent"/>
+                            <Border Grid.Row="1" Background="#F8FAFD" BorderBrush="#9BB2CD"
+                                    BorderThickness="1" CornerRadius="12" Margin="0,14,0,0">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <TabControl>
+            <TabItem Header="Base de datos">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <settings:DatabasePickerView x:Name="DatabasePicker"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Alquiler del vehículo">
+                <StackPanel Margin="22" MaxWidth="580" HorizontalAlignment="Left">
+                    <TextBlock Text="Elige la cuenta que guarda la reserva diaria de 9000 CUP. Los días trabajados usan su saldo para mostrar lo disponible para pagar." Foreground="#607987" TextWrapping="Wrap" Margin="0,0,0,18"/>
+                    <TextBlock Text="Cuenta" Foreground="#607987" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="RentAccountPicker" Width="300" DisplayMemberPath="Label" HorizontalAlignment="Left"/>
+                    <Button Content="Guardar cuenta de alquiler" HorizontalAlignment="Left" Margin="0,16,0,0" Click="SaveRentAccount_Click"/>
+                    <TextBlock x:Name="RentAccountSummary" Foreground="#2868C7" Margin="0,14,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Reglas de distribución">
+                <Grid Margin="17">
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <DataGrid x:Name="RulesGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                              SelectionUnit="FullRow" GridLinesVisibility="None" RowHeaderWidth="0" RowHeight="42"
+                              RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}"
+                              SelectionChanged="RulesGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Regla" Binding="{Binding Name}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                            <DataGridTextColumn Header="Cuenta" Binding="{Binding AccountName}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                            <DataGridTextColumn Header="Importe" Binding="{Binding RuleText}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="150"/>
+                            <DataGridTextColumn Header="Días" Binding="{Binding WhenText}" ElementStyle="{StaticResource TextStyle}" Width="125"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Row="1" Margin="0,15,0,0">
+                        <TextBlock Text="Las reglas sugieren distribuciones al consolidar servicios. Revísalas antes de guardar." Foreground="#78909B" TextWrapping="Wrap" Margin="0,0,0,9"/>
+                        <WrapPanel>
+                            <TextBox x:Name="RuleNameBox" Width="160" ToolTip="Nombre de regla, p. ej., alquiler del vehículo" Margin="0,0,8,8"/>
+                            <ComboBox x:Name="RuleAccountPicker" Width="190" DisplayMemberPath="Label" ToolTip="Cuenta de destino" Margin="0,0,8,8"/>
+                            <ComboBox x:Name="RuleTypePicker" Width="115" ToolTip="Tipo de regla" SelectedIndex="0" Margin="0,0,8,8"><ComboBoxItem Content="Fijo"/><ComboBoxItem Content="Porcentaje"/></ComboBox>
+                            <TextBox x:Name="RuleValueBox" Width="95" ToolTip="Importe fijo o porcentaje" Margin="0,0,8,8"/>
+                            <ComboBox x:Name="RuleCurrencyPicker" Width="80" ToolTip="Moneda del importe fijo" Margin="0,0,8,8"/>
+                            <CheckBox x:Name="RuleSundayCheck" Content="Domingo" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <Button Content="Añadir regla" Padding="12,6" Margin="0,0,8,8" Click="AddRule_Click"/>
+                            <Button Content="Actualizar seleccionado" Padding="12,6" Margin="0,0,8,8" Click="UpdateRule_Click"/>
+                            <Button Content="Quitar seleccionado" Padding="12,6" Margin="0,0,0,8" Click="RemoveRule_Click"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Monedas">
+                <Grid Margin="17">
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <DataGrid x:Name="CurrenciesGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                              SelectionUnit="FullRow" GridLinesVisibility="None" RowHeaderWidth="0" RowHeight="42"
+                              RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}"
+                              SelectionChanged="CurrenciesGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Código" Binding="{Binding Code}" ElementStyle="{StaticResource TextStyle}" Width="90"/>
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Name}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                            <DataGridTextColumn Header="Función" Binding="{Binding PrimaryLabel}" ElementStyle="{StaticResource TextStyle}" Width="110"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Row="1" Margin="0,15,0,0">
+                        <TextBlock Text="Los códigos son fijos. Guarda un código eliminado para volver a habilitarlo." Foreground="#78909B" TextWrapping="Wrap" Margin="0,0,0,9"/>
+                        <WrapPanel>
+                            <ComboBox x:Name="CurrencyCodePicker" Width="100" Margin="0,0,8,8" SelectedIndex="0"><ComboBoxItem Content="CUP"/><ComboBoxItem Content="USD"/><ComboBoxItem Content="MLC"/><ComboBoxItem Content="EUR"/></ComboBox>
+                            <TextBox x:Name="CurrencyNameBox" Width="210" Margin="0,0,8,8" ToolTip="Nombre de la moneda"/>
+                            <Button Content="Guardar moneda" Padding="12,6" Margin="0,0,8,8" Click="SaveCurrency_Click"/>
+                            <Button Content="Establecer como principal" Padding="12,6" Margin="0,0,8,8" Click="Primary_Click"/>
+                            <Button Content="Quitar" Padding="12,6" Margin="0,0,0,8" Click="RemoveCurrency_Click"/>
+                        </WrapPanel>
+                        <TextBlock Text="Nombre" Foreground="#78909B" FontSize="11"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Tasas de cambio">
+                <Grid Margin="17">
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <DataGrid x:Name="RatesGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                              SelectionUnit="FullRow" GridLinesVisibility="None" RowHeaderWidth="0" RowHeight="42"
+                              RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}"
+                              SelectionChanged="RatesGrid_SelectionChanged">
+                        <DataGrid.GroupStyle><StaticResource ResourceKey="DateHistoryGroup"/></DataGrid.GroupStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Hora" Binding="{Binding TimeText}" ElementStyle="{StaticResource TextStyle}" Width="90"/>
+                            <DataGridTextColumn Header="Tasa" Binding="{Binding Pair}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Row="1" Margin="0,15,0,0">
+                        <TextBlock Text="Una unidad de la moneda de origen equivale al importe indicado en la moneda de destino." Foreground="#78909B" TextWrapping="Wrap" Margin="0,0,0,9"/>
+                        <WrapPanel>
+                            <ComboBox x:Name="FromPicker" Width="105" Margin="0,0,8,8" ToolTip="Moneda de origen"/>
+                            <TextBlock Text="=" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                            <TextBox x:Name="RateBox" Width="115" Margin="0,0,8,8" ToolTip="Tasa"/>
+                            <ComboBox x:Name="ToPicker" Width="105" Margin="0,0,8,8" ToolTip="Moneda de destino"/>
+                            <Button Content="Añadir tasa" Padding="12,6" Margin="0,0,8,8" Click="AddRate_Click"/>
+                            <Button Content="Actualizar seleccionado" Padding="12,6" Margin="0,0,8,8" Click="UpdateRate_Click"/>
+                            <Button Content="Quitar seleccionado" Padding="12,6" Margin="0,0,0,8" Click="RemoveRate_Click"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Billetes">
+                <Grid Margin="17">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12"><TextBlock Text="Moneda" VerticalAlignment="Center" Margin="0,0,9,0"/><ComboBox x:Name="DenominationCurrencyPicker" Width="120" SelectionChanged="DenominationCurrency_Changed"/></StackPanel>
+                    <DataGrid Grid.Row="1" x:Name="DenominationsGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                              SelectionUnit="FullRow" GridLinesVisibility="None" RowHeaderWidth="0" RowHeight="42"
+                              RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}"
+                              SelectionChanged="DenominationsGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Denominación" Binding="{Binding ValueText}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                            <DataGridTextColumn Header="Billetes físicos" Binding="{Binding QuantityText}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="150"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Row="2" Margin="0,15,0,0">
+                        <TextBlock Text="Solo se pueden cambiar o quitar denominaciones sin billetes físicos restantes." Foreground="#78909B" TextWrapping="Wrap" Margin="0,0,0,9"/>
+                        <WrapPanel>
+                            <TextBox x:Name="DenominationValueBox" Width="145" Margin="0,0,8,8" ToolTip="Valor del billete"/>
+                            <Button Content="Añadir billete" Padding="12,6" Margin="0,0,8,8" Click="AddDenomination_Click"/>
+                            <Button Content="Actualizar seleccionado" Padding="12,6" Margin="0,0,8,8" Click="UpdateDenomination_Click"/>
+                            <Button Content="Quitar seleccionado" Padding="12,6" Margin="0,0,0,8" Click="RemoveDenomination_Click"/>
+                        </WrapPanel>
+                        <TextBlock Text="Valor" Foreground="#78909B" FontSize="11"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>
+

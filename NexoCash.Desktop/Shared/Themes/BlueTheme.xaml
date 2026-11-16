@@ -1,0 +1,67 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="SlimScrollThumb" TargetType="Thumb">
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Thumb">
+            <Border Background="#7F9FC3" CornerRadius="4" Margin="1"/>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <ControlTemplate x:Key="SlimVerticalScroll" TargetType="ScrollBar">
+        <Track x:Name="PART_Track" IsDirectionReversed="True" Orientation="Vertical">
+            <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/></Track.DecreaseRepeatButton>
+            <Track.Thumb><Thumb Style="{StaticResource SlimScrollThumb}"/></Track.Thumb>
+            <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/></Track.IncreaseRepeatButton>
+        </Track>
+    </ControlTemplate>
+    <ControlTemplate x:Key="SlimHorizontalScroll" TargetType="ScrollBar">
+        <Track x:Name="PART_Track" Orientation="Horizontal">
+            <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageLeftCommand" Opacity="0" Focusable="False"/></Track.DecreaseRepeatButton>
+            <Track.Thumb><Thumb Style="{StaticResource SlimScrollThumb}"/></Track.Thumb>
+            <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageRightCommand" Opacity="0" Focusable="False"/></Track.IncreaseRepeatButton>
+        </Track>
+    </ControlTemplate>
+    <Style TargetType="ScrollBar">
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Opacity" Value="0.25"/>
+        <Setter Property="Template" Value="{StaticResource SlimVerticalScroll}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="1"/></Trigger>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Height" Value="8"/>
+                <Setter Property="Template" Value="{StaticResource SlimHorizontalScroll}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="Window"><Setter Property="FontFamily" Value="Segoe UI Variable"/><Setter Property="Foreground" Value="#183345"/><Setter Property="Background" Value="#E1E8F0"/><Setter Property="Icon" Value="/Assets/NexoCash.ico"/></Style>
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="#E8EFFB"/><Setter Property="Foreground" Value="#254A80"/><Setter Property="BorderBrush" Value="#91ADD0"/><Setter Property="BorderThickness" Value="1"/><Setter Property="Padding" Value="14,9"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Cursor" Value="Hand"/><Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="Surface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.82"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value="0.4"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style TargetType="TextBox"><Setter Property="MinHeight" Value="32"/><Setter Property="Padding" Value="9,4"/><Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="BorderBrush" Value="#91ADD0"/><Setter Property="Background" Value="White"/><Setter Property="Foreground" Value="#183345"/><Style.Triggers><Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter Property="BorderBrush" Value="#3478D4"/></Trigger></Style.Triggers></Style>
+    <Style TargetType="ComboBox"><Setter Property="MinHeight" Value="32"/><Setter Property="Padding" Value="8,4"/><Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="BorderBrush" Value="#91ADD0"/></Style>
+    <Style TargetType="DatePicker"><Setter Property="MinHeight" Value="32"/></Style>
+    <Style TargetType="DataGrid"><Setter Property="Background" Value="#F8FAFD"/><Setter Property="BorderBrush" Value="#8FB1DB"/><Setter Property="BorderThickness" Value="1"/><Setter Property="GridLinesVisibility" Value="None"/><Setter Property="HeadersVisibility" Value="Column"/><Setter Property="RowHeaderWidth" Value="0"/><Setter Property="ColumnHeaderHeight" Value="44"/><Setter Property="RowHeight" Value="52"/><Setter Property="SelectionUnit" Value="FullRow"/><Setter Property="FontFamily" Value="Segoe UI Variable"/><Setter Property="FontSize" Value="13"/><Setter Property="FontWeight" Value="SemiBold"/></Style>
+    <Style TargetType="DataGridRow">
+        <Setter Property="Background" Value="#F8FAFD"/><Setter Property="Foreground" Value="#183345"/>
+        <Setter Property="BorderBrush" Value="#D5E2F2"/><Setter Property="BorderThickness" Value="0,0,0,1"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#EFF5FC"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter Property="Background" Value="#DEEAFC"/><Setter Property="Foreground" Value="#183345"/></Trigger></Style.Triggers>
+    </Style>
+    <Style TargetType="DataGridCell">
+        <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="#183345"/>
+        <Setter Property="BorderThickness" Value="0"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="Padding" Value="12,0"/>
+        <Style.Triggers><DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True"><Setter Property="Background" Value="#DEEAFC"/><Setter Property="Foreground" Value="#183345"/></DataTrigger></Style.Triggers>
+    </Style>
+    <Style TargetType="DataGridColumnHeader"><Setter Property="Background" Value="#EDF3FC"/><Setter Property="Foreground" Value="#42628D"/><Setter Property="FontFamily" Value="Segoe UI Variable"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="FontSize" Value="13"/><Setter Property="Padding" Value="12,10"/><Setter Property="BorderThickness" Value="0,0,0,1"/><Setter Property="BorderBrush" Value="#B6CAE5"/></Style>
+    <Style x:Key="TableText" TargetType="TextBlock"><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="Foreground" Value="#183345"/><Setter Property="FontFamily" Value="Segoe UI Variable"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Margin" Value="12,0"/></Style>
+    <Style x:Key="TableAmount" TargetType="TextBlock" BasedOn="{StaticResource TableText}"><Setter Property="TextAlignment" Value="Right"/><Setter Property="Typography.NumeralAlignment" Value="Tabular"/></Style>
+    <Style x:Key="TableAmountHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"><Setter Property="HorizontalContentAlignment" Value="Right"/><Setter Property="Padding" Value="12,10"/></Style>
+    <GroupStyle x:Key="DateHistoryGroup">
+        <GroupStyle.HeaderTemplate><DataTemplate>
+            <Border Background="#EAF1FA" BorderBrush="#8FB1DB" BorderThickness="0,0,0,1" Padding="14,8" Margin="0,8,0,0">
+                <TextBlock Text="{Binding Name, StringFormat={}{0:dd/MM/yyyy}}" FontFamily="Segoe UI Variable" FontWeight="Bold" FontSize="13" Foreground="#174A94"/>
+            </Border>
+        </DataTemplate></GroupStyle.HeaderTemplate>
+    </GroupStyle>
+    <Style TargetType="TabItem"><Setter Property="Padding" Value="16,10"/><Setter Property="Foreground" Value="#42628D"/><Setter Property="FontWeight" Value="SemiBold"/></Style>
+</ResourceDictionary>
+

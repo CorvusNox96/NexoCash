@@ -1,0 +1,12 @@
+<Window x:Class="NexoCash.Desktop.Features.Settings.DatabaseSetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:settings="clr-namespace:NexoCash.Desktop.Features.Settings"
+        Title="Elegir base de datos" Width="640" Height="460" MinWidth="560" MinHeight="420"
+        WindowStartupLocation="CenterScreen" Background="#E1E8F0">
+    <Border Background="#F8FAFD" Margin="20" CornerRadius="12" BorderBrush="#9BB2CD" BorderThickness="1">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <settings:DatabasePickerView x:Name="Picker"/>
+        </ScrollViewer>
+    </Border>
+</Window>

@@ -1,0 +1,57 @@
+<Window x:Class="NexoCash.Desktop.Features.Services.ServiceConsolidationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Distribuir ingresos de servicios" Width="850" Height="760" MinWidth="700" MinHeight="620"
+        WindowStartupLocation="CenterOwner" Background="#E1E8F0">
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="1. Distribuir ingresos de servicios" FontSize="26" FontWeight="SemiBold" Foreground="#183345" />
+            <TextBlock Text="Distribuye cada importe cobrado entre cuentas o retiros directos. Solo se incluyen los servicios terminados." Foreground="#607987" Margin="0,5,0,16" TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Fecha de trabajo" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <DatePicker x:Name="WorkDatePicker" Width="145" SelectedDateChanged="WorkDate_Changed" />
+                <Button Content="Actualizar" Click="Refresh_Click" Margin="10,0,0,0" Padding="12,5" />
+            </StackPanel>
+        </StackPanel>
+        <Border Grid.Row="1" Background="#F8FAFD" CornerRadius="10" BorderBrush="#9BB2CD" BorderThickness="1" Padding="16" Margin="0,18,0,14">
+            <StackPanel>
+                <TextBlock Text="Totales cobrados" FontSize="16" FontWeight="SemiBold" Foreground="#183345" />
+                <TextBlock x:Name="SummaryText" Text="No hay servicios terminados en esta fecha." TextWrapping="Wrap" Foreground="#456371" Margin="0,8,0,0" />
+                <TextBlock x:Name="ServiceCountText" Foreground="#78909B" Margin="0,6,0,0" />
+            </StackPanel>
+        </Border>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Distribuir ingresos" FontSize="17" FontWeight="SemiBold" Foreground="#183345" />
+                <TextBlock Text="Añade partidas hasta que cada total llegue a cero. El efectivo va a cuentas de efectivo o a un retiro directo; las transferencias van a cuentas virtuales o a un retiro directo." Foreground="#607987" TextWrapping="Wrap" Margin="0,4,0,12" />
+                <Button Content="Aplicar reglas de distribución guardadas" HorizontalAlignment="Left" Margin="0,0,0,12" Click="ApplyRules_Click"/>
+                <Border Background="#F8FAFD" BorderBrush="#9BB2CD" BorderThickness="1" CornerRadius="10" Padding="14">
+                    <StackPanel>
+                        <WrapPanel>
+                            <ComboBox x:Name="TotalPicker" Width="155" DisplayMemberPath="Label" SelectionChanged="Total_Changed" Margin="0,0,8,8" />
+                            <ComboBox x:Name="AccountPicker" Width="220" DisplayMemberPath="Label" Margin="0,0,8,8" />
+                            <TextBox x:Name="AmountBox" Width="105" Margin="0,0,8,8" ToolTip="Importe" />
+                            <Button Content="Añadir distribución" Padding="12,5" Click="AddAllocation_Click" Margin="0,0,0,8" />
+                        </WrapPanel>
+                        <TextBlock x:Name="RemainingText" Foreground="#2868C7" Margin="0,0,0,8" />
+                        <TextBlock x:Name="AllRemainingText" Foreground="#607987" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                        <ListBox x:Name="AllocationsList" Height="125" DisplayMemberPath="Label" />
+                        <Button Content="Quitar distribución seleccionada" HorizontalAlignment="Right" Click="RemoveAllocation_Click" Margin="0,9,0,0" Padding="10,5" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        <DockPanel Grid.Row="3" Margin="0,16,0,0">
+            <Button Content="Revisar y continuar →" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                    Background="#2868C7" Foreground="White" BorderThickness="0" Padding="18,10" FontWeight="SemiBold"
+                    Click="Continue_Click" />
+        </DockPanel>
+    </Grid>
+</Window>
+

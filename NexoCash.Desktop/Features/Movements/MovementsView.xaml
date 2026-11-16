@@ -1,0 +1,50 @@
+<UserControl x:Class="NexoCash.Desktop.Features.Movements.MovementsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="#F8FAFD">
+    <UserControl.Resources>
+        <Style x:Key="RowStyle" TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="Background" Value="White"/><Setter Property="Foreground" Value="#183345"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Style.Triggers><Trigger Property="IsSelected" Value="True"><Setter Property="Background" Value="#DEEAFC"/><Setter Property="Foreground" Value="#183345"/></Trigger></Style.Triggers>
+        </Style>
+        <Style x:Key="CellStyle" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+            <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="#183345"/>
+            <Setter Property="BorderThickness" Value="0"/><Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers><DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True"><Setter Property="Background" Value="#DEEAFC"/><Setter Property="Foreground" Value="#183345"/></DataTrigger></Style.Triggers>
+        </Style>
+        <Style x:Key="TextStyle" TargetType="TextBlock" BasedOn="{StaticResource TableText}"/>
+    </UserControl.Resources>
+    <Grid Margin="28,25,28,27">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <DockPanel Margin="0,0,0,20">
+            <StackPanel x:Name="HeaderActions" DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="Depositar" Padding="13,8" Margin="0,0,7,0" Click="Deposit_Click"/>
+                <Button Content="Retirar" Padding="13,8" Margin="0,0,7,0" Click="Withdraw_Click"/>
+                <Button Content="Transferir" Background="#2868C7" Foreground="White" BorderThickness="0" Padding="15,8" Click="Transfer_Click"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock x:Name="CountText" Foreground="#7D929F" FontSize="12"/>
+            </StackPanel>
+        </DockPanel>
+        <Grid Grid.Row="1">
+            <DataGrid x:Name="MovementsGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                      SelectionUnit="FullRow" GridLinesVisibility="None" RowHeaderWidth="0"
+                      RowStyle="{StaticResource RowStyle}" CellStyle="{StaticResource CellStyle}"
+                      Background="#F8FAFD" BorderBrush="#8FB1DB" BorderThickness="1" RowHeight="52" FontSize="13">
+                <DataGrid.GroupStyle><StaticResource ResourceKey="DateHistoryGroup"/></DataGrid.GroupStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Hora" Binding="{Binding TimeText}" ElementStyle="{StaticResource TextStyle}" Width="90"/>
+                    <DataGridTextColumn Header="Tipo" Binding="{Binding Type, Converter={StaticResource SpanishDisplay}}" ElementStyle="{StaticResource TextStyle}" Width="145"/>
+                    <DataGridTextColumn Header="Desde" Binding="{Binding From, Converter={StaticResource SpanishDisplay}}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                    <DataGridTextColumn Header="Hasta" Binding="{Binding To, Converter={StaticResource SpanishDisplay}}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                    <DataGridTextColumn Header="Importe" Binding="{Binding AmountText}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="150"/>
+                    <DataGridTextColumn Header="Descripción" Binding="{Binding Description}" ElementStyle="{StaticResource TextStyle}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock x:Name="EmptyText" Text="Aún no hay movimientos." Visibility="Collapsed" Foreground="#718895"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</UserControl>
+

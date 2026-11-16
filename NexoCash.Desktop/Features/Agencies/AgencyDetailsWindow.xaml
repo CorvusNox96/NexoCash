@@ -1,0 +1,150 @@
+<Window x:Class="NexoCash.Desktop.Features.Agencies.AgencyDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:NexoCash.Desktop.Shared.Converters"
+        Title="Agencia" Width="980" Height="700" MinWidth="760" MinHeight="570"
+        WindowStartupLocation="CenterOwner" Background="#E1E8F0" ShowInTaskbar="False">
+    <Window.Resources>
+        <converters:PhotoBytesConverter x:Key="PhotoBytesConverter" />
+        <converters:InitialLetterConverter x:Key="InitialLetterConverter" />
+        <Style x:Key="InfoLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#718895" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style x:Key="InfoValue" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#183345" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,5,0,0" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Background="#F8FAFD" BorderBrush="#9BB2CD" BorderThickness="1" CornerRadius="12" Padding="22">
+            <StackPanel>
+                <DockPanel>
+                    <Grid Width="70" Height="70" DockPanel.Dock="Left" Margin="0,0,18,0">
+                        <Ellipse Fill="#DDECEB" />
+                        <TextBlock Text="{Binding Agency.Name, Converter={StaticResource InitialLetterConverter}}"
+                                   Foreground="#246A65" FontWeight="Bold" FontSize="28"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Agency.Photo}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Ellipse>
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding Agency.Photo, Converter={StaticResource PhotoBytesConverter}}" Stretch="UniformToFill" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="AGENCIA" Style="{StaticResource InfoLabel}" />
+                        <TextBlock Text="{Binding Agency.Name}" Foreground="#183345" FontSize="25" FontWeight="SemiBold" />
+                        <TextBlock Text="Detalles y servicios registrados" Foreground="#718895" FontSize="13" Margin="0,4,0,0" />
+                    </StackPanel>
+                </DockPanel>
+                <Grid Margin="0,22,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="ADMINISTRACIÓN" Style="{StaticResource InfoLabel}" />
+                        <TextBlock Text="{Binding Agency.AdministrationNumber, TargetNullValue=No number}" Style="{StaticResource InfoValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="COMISIÓN ACTUAL" Style="{StaticResource InfoLabel}" />
+                        <TextBlock Text="{Binding Agency.CurrentCommissionPercent, StringFormat={}{0:N2}%}" Style="{StaticResource InfoValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="FONDO DISPONIBLE" Style="{StaticResource InfoLabel}" />
+                        <TextBlock Text="{Binding CupFund, StringFormat={}{0:N2} CUP}" Style="{StaticResource InfoValue}" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <TabControl Grid.Row="1" Margin="0,18,0,0" Background="Transparent" BorderThickness="0">
+        <TabItem Header="Servicios">
+        <Border Background="#F8FAFD" BorderBrush="#9BB2CD" BorderThickness="1"
+                CornerRadius="12" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <DockPanel>
+                    <TextBlock x:Name="ServicesCountText" DockPanel.Dock="Right" Foreground="#718895"
+                               FontSize="12" VerticalAlignment="Center" />
+                    <TextBlock Text="Servicios de esta agencia" Foreground="#183345" FontSize="18" FontWeight="SemiBold" />
+                </DockPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,15,0,15">
+                    <TextBlock Text="Desde" Foreground="#607887" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <DatePicker x:Name="FromPicker" Width="135" />
+                    <TextBlock Text="Hasta" Foreground="#607887" VerticalAlignment="Center" Margin="16,0,8,0" />
+                    <DatePicker x:Name="ToPicker" Width="135" />
+                    <Button Content="Filtrar" Padding="14,6" Margin="14,0,0,0" Click="Filter_Click" />
+                    <Button Content="Limpiar" Padding="14,6" Margin="8,0,0,0" Click="Clear_Click" />
+                </StackPanel>
+                <Grid Grid.Row="2">
+                    <DataGrid x:Name="ServicesGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                              CanUserAddRows="False" HeadersVisibility="Column" GridLinesVisibility="None"
+                              Background="#F8FAFD" BorderBrush="#8FB1DB" BorderThickness="1" RowHeight="48">
+                        <DataGrid.GroupStyle><StaticResource ResourceKey="DateHistoryGroup"/></DataGrid.GroupStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Estado" Binding="{Binding Status, Converter={StaticResource SpanishDisplay}}" ElementStyle="{StaticResource TableText}" Width="115" />
+                            <DataGridTextColumn Header="Previsto" Binding="{Binding ExpectedPrice, StringFormat=N2}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="110" />
+                            <DataGridTextColumn Header="Cobrado" Binding="{Binding CollectedAmount, StringFormat=N2}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="110" />
+                            <DataGridTextColumn Header="Comisión" Binding="{Binding CommissionAmount, StringFormat=N2}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="110" />
+                            <DataGridTextColumn Header="Moneda" Binding="{Binding Currency}" ElementStyle="{StaticResource TableText}" Width="75" />
+                            <DataGridTextColumn Header="Descripción" Binding="{Binding Description}" ElementStyle="{StaticResource TableText}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock x:Name="EmptyText" Text="No se encontraron servicios en este período."
+                               Foreground="#718895" FontSize="14" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Visibility="Collapsed" />
+                </Grid>
+            </Grid>
+        </Border>
+        </TabItem>
+        <TabItem Header="Recargas">
+            <Border Background="#F8FAFD" BorderBrush="#9BB2CD" BorderThickness="1" CornerRadius="12" Padding="20">
+                <Grid><DataGrid x:Name="TopUpsGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" BorderBrush="#8FB1DB" BorderThickness="1">
+                    <DataGrid.GroupStyle><StaticResource ResourceKey="DateHistoryGroup"/></DataGrid.GroupStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Hora" Binding="{Binding TimeText}" ElementStyle="{StaticResource TableText}" Width="100"/>
+                        <DataGridTextColumn Header="Transacción" Binding="{Binding TransactionText}" ElementStyle="{StaticResource TableText}" Width="*"/>
+                        <DataGridTextColumn Header="Cuenta" Binding="{Binding AccountText}" ElementStyle="{StaticResource TableText}" Width="*"/>
+                        <DataGridTextColumn Header="Adicional" Binding="{Binding SurchargeText}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="105"/>
+                        <DataGridTextColumn Header="Retiro" Binding="{Binding DebitedText}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="130"/>
+                        <DataGridTextColumn Header="Fondo" Binding="{Binding AmountText}" ElementStyle="{StaticResource TableAmount}" HeaderStyle="{StaticResource TableAmountHeader}" Width="130"/>
+                    </DataGrid.Columns>
+                </DataGrid><TextBlock x:Name="EmptyTopUpsText" Text="Aún no hay recargas registradas." Foreground="#718895" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/></Grid>
+            </Border>
+        </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Cerrar" Padding="18,8" Click="Close_Click"/>
+            <Button Content="Editar" Padding="18,8" Margin="9,0,0,0" Click="Edit_Click"/>
+            <Button Content="Recargar agencia" Background="#2868C7" Foreground="White" BorderThickness="0" Padding="18,8" Margin="9,0,0,0" Click="TopUp_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

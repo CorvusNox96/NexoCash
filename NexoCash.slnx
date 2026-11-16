@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="NexoCash.Application/NexoCash.Application.csproj" />
+  <Project Path="NexoCash.Desktop/NexoCash.Desktop.csproj" />
+  <Project Path="NexoCash.Domain/NexoCash.Domain.csproj" />
+  <Project Path="NexoCash.Infrastructure/NexoCash.Infrastructure.csproj" />
+</Solution>

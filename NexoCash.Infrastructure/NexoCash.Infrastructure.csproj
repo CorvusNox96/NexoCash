@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\NexoCash.Application\NexoCash.Application.csproj" />
+    <ProjectReference Include="..\NexoCash.Domain\NexoCash.Domain.csproj" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.53.3" />
+    <EmbeddedResource Include="Persistence\Schema.sql" />
+    <EmbeddedResource Include="Persistence\Migration2.sql" />
+    <EmbeddedResource Include="Persistence\Migration3.sql" />
+    <EmbeddedResource Include="Persistence\Migration4.sql" />
+    <EmbeddedResource Include="Persistence\Migration5.sql" />
+    <EmbeddedResource Include="Persistence\Migration6.sql" />
+    <EmbeddedResource Include="Persistence\Migration7.sql" />
+    <EmbeddedResource Include="Persistence\Migration8.sql" />
+    <EmbeddedResource Include="Persistence\Migration9.sql" />
+    <EmbeddedResource Include="Persistence\Migration10.sql" />
+    <EmbeddedResource Include="Persistence\Migration11.sql" />
+    <EmbeddedResource Include="Persistence\Migration12.sql" />
+    <EmbeddedResource Include="Persistence\Migration13.sql" />
+    <EmbeddedResource Include="Persistence\Migration14.sql" />
+    <EmbeddedResource Include="Persistence\Migration15.sql" />
+    <EmbeddedResource Include="Persistence\Migration16.sql" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

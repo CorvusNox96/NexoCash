@@ -1,0 +1,21 @@
+<Window x:Class="NexoCash.Desktop.Features.Agencies.AgencyTopUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Recargar agencia" Width="560" Height="550" MinWidth="560" MinHeight="550" MaxWidth="560" MaxHeight="550"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Background="#E1E8F0" ShowInTaskbar="False">
+    <Grid Margin="22"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <StackPanel Margin="0,0,0,15"><TextBlock Text="Recargar agencia" FontSize="22" FontWeight="SemiBold" Foreground="#183345"/><TextBlock Text="Registra el retiro y abona el fondo de la agencia." Foreground="#607987" Margin="0,4,0,0"/></StackPanel>
+        <Border Grid.Row="1" Background="White" BorderBrush="#8FB1DB" BorderThickness="1" CornerRadius="10" Padding="18"><StackPanel>
+            <TextBlock Text="Cuenta de origen *" Foreground="#42628D" FontWeight="SemiBold" Margin="0,0,0,5"/><ComboBox x:Name="AccountPicker" Height="36" DisplayMemberPath="Label" SelectionChanged="Account_Changed"/>
+            <TextBlock Text="Número de transacción *" Foreground="#42628D" FontWeight="SemiBold" Margin="0,14,0,5"/><TextBox x:Name="TransactionBox" Height="36" MaxLength="80"/>
+            <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                <StackPanel><TextBlock Text="Importe para la agencia (CUP) *" Foreground="#42628D" FontWeight="SemiBold" Margin="0,0,0,5"/><TextBox x:Name="AmountBox" Height="36" TextChanged="Values_Changed"/></StackPanel>
+                <StackPanel Grid.Column="2"><TextBlock Text="Adicional por transferencia (%)" Foreground="#42628D" FontWeight="SemiBold" Margin="0,0,0,5"/><TextBox x:Name="PercentBox" Height="36" Text="0" TextChanged="Values_Changed"/></StackPanel>
+            </Grid>
+            <TextBlock x:Name="DebitPreview" Foreground="#174A94" FontWeight="SemiBold" Margin="0,13,0,0"/>
+            <Button x:Name="CountButton" Content="Contar billetes (opcional)" HorizontalAlignment="Left" Margin="0,16,0,0" Click="Count_Click"/>
+            <TextBlock x:Name="CountSummary" Text="Puedes omitir el conteo de billetes." Foreground="#607987" FontSize="11" Margin="0,7,0,0"/>
+            <TextBlock x:Name="ErrorText" Foreground="#B44040" Margin="0,12,0,0" TextWrapping="Wrap"/>
+        </StackPanel></Border>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0"><Button Content="Cancelar" Click="Cancel_Click"/><Button Content="Guardar recarga" Background="#2868C7" Foreground="White" BorderThickness="0" Margin="10,0,0,0" Click="Save_Click"/></StackPanel>
+    </Grid>
+</Window>

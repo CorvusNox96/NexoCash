@@ -1,0 +1,13 @@
+<Application x:Class="NexoCash.Desktop.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:NexoCash.Desktop"
+             xmlns:converters="clr-namespace:NexoCash.Desktop.Shared.Converters"
+            >
+    <Application.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceDictionary Source="Shared/Themes/BlueTheme.xaml"/></ResourceDictionary.MergedDictionaries><converters:SpanishDisplayConverter x:Key="SpanishDisplay"/></ResourceDictionary>
+         
+    </Application.Resources>
+</Application>
+
+
+
